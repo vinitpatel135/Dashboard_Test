@@ -131,7 +131,7 @@ const getStatusBadge = (
       return (
         <Badge className="bg-pending text-pending-foreground">
           <Clock className="w-3 h-3 mr-1" />
-          Pending
+          Scheduled
         </Badge>
       );
 
@@ -247,7 +247,7 @@ export default function DealsTree({ deals }: DealsTreeProps) {
               onValueChange={(value) => toggleDeal(dealId)}
             >
               <AccordionItem value={dealId} className="border-none">
-                <AccordionTrigger className="px-6 py-4 hover:bg-white/10 transition-smooth text-white">
+                <AccordionTrigger className="px-6 py-4 bg-slate-900 hover:bg-gray/10 transition-colors transition-smooth text-white">
                   <div className="flex items-center gap-4 text-left w-full">
                     <Building2 className="w-5 h-5 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
@@ -301,7 +301,7 @@ export default function DealsTree({ deals }: DealsTreeProps) {
                               value={instId}
                               className="border-none"
                             >
-                              <AccordionTrigger className="px-4 py-3 hover:bg-white/10 transition-smooth text-white">
+                              <AccordionTrigger className="px-4 py-3 bg-purple-900 hover:bg-gray/10 transition-colors transition-smooth text-white">
                                 <div className="flex items-center gap-3 text-left w-full">
                                   <DollarSign className="w-4 h-4 flex-shrink-0" />
                                   <div className="flex-1 min-w-0">
@@ -357,7 +357,7 @@ export default function DealsTree({ deals }: DealsTreeProps) {
                                               value={payId}
                                               className="border-none"
                                             >
-                                              <AccordionTrigger className="px-3 py-2 hover:bg-white/10 transition-smooth text-white">
+                                              <AccordionTrigger className="px-3 py-2 bg-blue-950 hover:bg-gray/10 transition-colors transition-smooth text-white">
                                                 <div className="flex items-center gap-3 text-left w-full">
                                                   <CreditCard className="w-4 h-4 flex-shrink-0" />
                                                   <div className="flex-1 min-w-0">
@@ -394,7 +394,7 @@ export default function DealsTree({ deals }: DealsTreeProps) {
                                                         (refund, rIndex) => (
                                                           <div
                                                             key={rIndex}
-                                                            className="bg-gradient-refund rounded-lg p-3 border-l-4 border-destructive"
+                                                            className="bg-emerald-950 rounded-lg p-3 border-l-4 border-destructive"
                                                           >
                                                             <div className="flex items-center justify-between">
                                                               <div className="text-white">
