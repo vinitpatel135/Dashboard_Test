@@ -20,6 +20,13 @@ import {
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import axios from "axios";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Sample data for demonstration
 const sampleDeals = [
@@ -134,6 +141,7 @@ const Index = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [deals, setDeals] = useState<Array<any>>([]);
+  const [dealType, setDealType] = useState("");
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -152,6 +160,7 @@ const Index = () => {
           organizationId,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
+          dealType,
         }
       );
       setDeals(response.data.data || []);
@@ -261,6 +270,26 @@ const Index = () => {
                       />
                     </PopoverContent>
                   </Popover>
+                </div>
+
+                {/* Dropdown Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="dealType">Deal Type</Label>
+                  <Select value={dealType} onValueChange={setDealType}>
+                    <SelectTrigger id="dealType" className="w-full">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="deal_closed">Deal Closed</SelectItem>
+                      <SelectItem value="con_rav">Contract Revenue</SelectItem>
+                      <SelectItem value="cash_coll">Cash Collected</SelectItem>
+                      <SelectItem value="miss_pay">Missed Payments</SelectItem>
+                      <SelectItem value="upco_pay">
+                        Upcoming Payments
+                      </SelectItem>
+                      <SelectItem value="refunded">Refunds</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Submit Button */}

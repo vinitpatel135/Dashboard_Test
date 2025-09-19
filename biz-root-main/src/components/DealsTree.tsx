@@ -163,11 +163,11 @@ const formatCurrency = (amount: number | string | undefined | null) => {
 
 const formatDate = (dateString: string) => {
   if (!dateString) return "N/A";
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  const date = new Date(dateString);
+  return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}/${String(date.getDate()).padStart(2, "0")}`;
 };
 
 export default function DealsTree({ deals }: DealsTreeProps) {

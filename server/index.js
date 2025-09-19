@@ -17,6 +17,6 @@ app.use("/api/deals", dealRouter);
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log("✅ MongoDB connected");
-        app.listen(5151, () => console.log("🚀 Server running on http://localhost:5000"));
+        app.listen(5151, () => console.log("🚀 Server running on http://localhost:5151"));
     })
     .catch(err => console.error("❌ DB connection error:", err));

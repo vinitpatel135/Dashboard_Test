@@ -6,10 +6,10 @@ const Deal = require("./dealModel");
 
 exports.getDeals = async (req, res) => {
     try {
-        let { organizationId, startDate, endDate } = req.body;
+        let { organizationId, startDate, endDate, dealType } = req.body;
 
-        if (!organizationId || !startDate || !endDate) {
-            return res.status(400).json({ error: "organizationId, startDate, endDate required" });
+        if (!organizationId || !startDate || !endDate || !dealType) {
+            return res.status(400).json({ error: "organizationId, startDate, endDate, dealType required" });
         }
 
         startDate = dayjs(startDate).utc().startOf("day").toDate();
@@ -34,10 +34,87 @@ exports.getDeals = async (req, res) => {
             }
         ];
 
+        let dealTypeCondition = {};
+        switch (dealType) {
+            case "deal_closed":
+                // already closed deals
+                dealTypeCondition = { wonDate: { $gte: startDate, $lte: endDate } };
+                break;
+
+            case "con_rav":
+                // consider "contract revenue" deals
+                dealTypeCondition = { wonDate: { $gte: startDate, $lte: endDate } }; // adjust to your schema
+                break;
+
+            case "cash_coll":
+                // deals that have payments with status=paid in range
+                dealTypeCondition = {
+                    installments: {
+                        $elemMatch: {
+                            payments: {
+                                $elemMatch: {
+                                    status: "paid",
+                                    date: { $gte: startDate, $lte: endDate },
+                                }
+                            }
+                        },
+                    },
+                };
+                break;
+
+            case "miss_pay":
+                // installments scheduled but not paid
+                dealTypeCondition = {
+                    installments: {
+                        $elemMatch: {
+                            status: "overdue",
+                            scheduledDate: { $gte: startDate, $lte: endDate },
+                        },
+                    },
+                };
+                break;
+
+            case "upco_pay":
+                // upcoming payments in future
+                dealTypeCondition = {
+                    installments: {
+                        $elemMatch: {
+                            status: "scheduled",
+                            scheduledDate: { $gte: startDate, $lte: endDate },
+                        },
+                    },
+                };
+                break;
+
+            case "refunded":
+                // any refunds in payments
+                dealTypeCondition = {
+                    installments: {
+                        $elemMatch: {
+                            payments: {
+                                $elemMatch: {
+                                    refunds: {
+                                        $elemMatch: {
+                                            status: "refunded",
+                                            date: { $gte: startDate, $lte: endDate },
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                    },
+                };
+                break;
+
+            default:
+                break;
+        }
+
+
         const dealsQuery = {
             organizationId,
             status: { $ne: "opportunity" },
-            $and: baseConditions,
+            ...dealTypeCondition,
         };
 
         const deals = await Deal.find(
