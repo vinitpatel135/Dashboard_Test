@@ -146,11 +146,14 @@ const Index = () => {
     console.log("Filter data for API call:", filterData);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/deals/", {
-        organizationId,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-      });
+      const response = await axios.post(
+        "https://dashboard-test-vt5i.onrender.com/api/deals",
+        {
+          organizationId,
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+        }
+      );
       setDeals(response.data.data || []);
     } catch (err) {
       console.error(err);
